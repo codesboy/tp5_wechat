@@ -21,26 +21,26 @@ class Base extends Controller
         timestamp   时间戳
         nonce   随机数
         echostr 随机字符串*/
-       $nonce=input('get.nonce');
-       $timestamp=input('get.timestamp');
-       $echostr=input('get.echostr');
-       $signature=input('get.signature');
+        $nonce=input('get.nonce');
+        $timestamp=input('get.timestamp');
+        $echostr=input('get.echostr');
+        $signature=input('get.signature');
 
-       // 自定义一个token令牌
-       $token=config('api.token');
+        // 自定义一个token令牌
+        $token=config('api.token');
 
-       // 将token、timestamp、nonce三个参数进行字典序排序形成数组 然后字典序排序
-       $array=array($nonce,$timestamp,$token);
-       sort($array,SORT_STRING);
+        // 将token、timestamp、nonce三个参数进行字典序排序形成数组 然后字典序排序
+        $array=array($nonce,$timestamp,$token);
+        sort($array,SORT_STRING);
 
-       // 拼接(implode/join)成字符串  然后sha1加密  加密后的字符串可与signature对比,标识该请求来源于微信
-       $str=sha1(implode($array));
-       if($str==$signature && $echostr){
-            // 第一次接入weixin api接口的时候（在后台配置的时候）,微信服务器所请求的URL参数中有$echostr参数，第二次就没有了，在微信公众平台填写服务器配置并提交的时候就是第一次接入
-            echo $echostr;
-            exit;
-       }else{//如果没有$echostr参数，就表示第二次以后接入
+        // 拼接(implode/join)成字符串  然后sha1加密  加密后的字符串可与signature对比,标识该请求来源于微信
+        $str=sha1(implode($array));
+        if($str==$signature && $echostr){
+             // 第一次接入weixin  api接口的时候（在后台配置的时候）,微信服务器所请求的URL参数中有$echostr参数，第二次就没有了，在微信公众平台填写服务器配置并提交的时候就是第一次接入
+             echo $echostr;
+             exit;
+        }else{//如果没有$echostr参数，就表示第二次以后接入
             $this->responseMsg();
-       }
+        }
     }
 }
