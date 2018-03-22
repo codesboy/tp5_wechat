@@ -8,7 +8,7 @@ use think\Controller;
 class Base extends Controller
 {
 
-    function __construct(argument)
+    function __construct()
     {
         # code...
     }
